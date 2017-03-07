@@ -1,4 +1,10 @@
 *.class
+target
+.idea
+module_web-analyzer.xml
+web-analyzer.iml
+web-analyzer.xml
+web-analyzer.properties
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
