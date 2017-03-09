@@ -1,5 +1,7 @@
 package com.jani.webanalyzer;
 
+import com.jani.webanalyzer.configs.ServicesConfiguration;
+import com.jani.webanalyzer.services.WebAnalyzerService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -8,7 +10,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Application {
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext("com.jani.webanalyzer.configs");
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
+                ServicesConfiguration.class,
+                WebAnalyzerService.class
+        );
         ctx.start();
     }
 }
