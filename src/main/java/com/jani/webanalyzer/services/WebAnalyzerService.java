@@ -5,7 +5,6 @@ import com.jani.webanalyzer.response.AddResponse;
 import com.jani.webanalyzer.response.GetResponse;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class WebAnalyzerService implements WebAnalyzer {
     private final List<String> paths = new ArrayList<>();
 
     @Override
-    public AddResponse add(@Valid AddRequest addRequest) {
+    public AddResponse add(AddRequest addRequest) {
         paths.add(addRequest.getPath());
         return AddResponse.response(CREATED, paths.size() - 1);
     }

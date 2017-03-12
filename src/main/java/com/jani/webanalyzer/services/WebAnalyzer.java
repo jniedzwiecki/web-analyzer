@@ -4,6 +4,7 @@ import com.jani.webanalyzer.request.AddRequest;
 import com.jani.webanalyzer.response.AddResponse;
 import com.jani.webanalyzer.response.GetResponse;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
@@ -16,7 +17,7 @@ import javax.ws.rs.core.MediaType;
 public interface WebAnalyzer {
 
     @POST
-    AddResponse add(AddRequest request);
+    AddResponse add(@Valid AddRequest request);
 
     @GET
     @Path("/{id}")
