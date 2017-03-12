@@ -129,6 +129,7 @@
                     <target>1.8</target>
                     <source>1.8</source>
                 </configuration>
+                <version>3.3</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
