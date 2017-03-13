@@ -5,21 +5,32 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.jani.webanalyzer.util.FluentBuilder.with;
-import static java.util.Optional.of;
+import static java.util.logging.Logger.getLogger;
+import static javax.ws.rs.core.Response.Status.*;
 
 /**
  * Created by jacekniedzwiecki on 12.03.2017.
  */
 public class ToHttpErrorExceptionMapper implements ExceptionMapper {
 
-    private static Map<Class<? extends Throwable>, Response> map = with(new HashMap<Class<? extends Throwable>, Response>())
-            .op(m -> m.put(ConstraintViolationException.class, Response.status(Response.Status.BAD_REQUEST).build()))
-            .op(m -> m.put(ArrayIndexOutOfBoundsException.class, Response.status(Response.Status.NOT_FOUND).build())).get();
+    public static Logger logger = getLogger("ToHttpErrorExceptionMapper");
+
+    private static Map<Class<? extends Throwable>, Response> errorResponseBasedOnException = with(new HashMap<Class<? extends Throwable>, Response>())
+            .op(m -> m.put(ConstraintViolationException.class, Response.status(BAD_REQUEST).build()))
+            .op(m -> m.put(ArrayIndexOutOfBoundsException.class, Response.status(NOT_FOUND).build()))
+            .get();
 
     @Override
     public Response toResponse(Throwable exception) {
-        return of(map.get(exception.getClass())).orElse(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+        return errorResponseBasedOnException.getOrDefault(storeLog(exception), Response.status(INTERNAL_SERVER_ERROR).build());
+    }
+
+    private Throwable storeLog(Throwable throwable) {
+        logger.log(Level.WARNING, throwable.toString());
+        return throwable;
     }
 }
