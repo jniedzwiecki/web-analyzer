@@ -1,10 +1,13 @@
-package com.jani.webanalyzer.response;
+package com.jani.webanalyzer.response
+
+import groovy.transform.CompileStatic;
 
 import javax.ws.rs.core.Response;
 
 /**
  * Created by jacekniedzwiecki on 08.03.2017.
  */
+@CompileStatic
 class AddResponse {
 
     private final Response.Status status
