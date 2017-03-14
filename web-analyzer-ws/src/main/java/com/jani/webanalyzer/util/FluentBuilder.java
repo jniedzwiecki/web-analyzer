@@ -25,4 +25,8 @@ public class FluentBuilder<T> {
     public T get() {
         return t;
     }
+
+    public <U> U get(Function<T, U> func) {
+        return func.apply(t);
+    }
 }

@@ -4,8 +4,6 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.jani.webanalyzer.aspects.LoggingAspect;
 import com.jani.webanalyzer.exceptions.ToHttpErrorExceptionMapper;
 import com.jani.webanalyzer.services.WebAnalyzer;
-import com.jani.webanalyzer.services.WebAnalyzerService;
-import com.jani.webanalyzer.util.FluentBuilder;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.feature.Feature;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
