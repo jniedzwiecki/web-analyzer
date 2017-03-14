@@ -21,6 +21,14 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-all</artifactId>
+                <!-- any version of Groovy \>= 1.8.2 should work here -->
+                <version>2.4.3</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.scala-lang</groupId>
                 <artifactId>scala-library</artifactId>
