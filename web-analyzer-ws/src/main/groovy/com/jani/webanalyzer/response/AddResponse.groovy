@@ -10,11 +10,11 @@ import javax.ws.rs.core.Response;
 @CompileStatic
 class AddResponse {
 
-    private final Response.Status status
-    private final int pathId
+    final Response.Status status
+    final int pathId
 
     static AddResponse response(Response.Status status, int id) {
-        return new AddResponse(status, id);
+        return new AddResponse(status, id)
     }
 
     private AddResponse(Response.Status status, int pathId) {

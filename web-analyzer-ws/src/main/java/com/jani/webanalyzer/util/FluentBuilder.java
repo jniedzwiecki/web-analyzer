@@ -1,5 +1,6 @@
 package com.jani.webanalyzer.util;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -17,8 +18,8 @@ public class FluentBuilder<T> {
         this.t = t;
     }
 
-    public FluentBuilder<T> op(Function<T, ?> func) {
-        func.apply(t);
+    public FluentBuilder<T> op(Consumer<T> func) {
+        func.accept(t);
         return this;
     }
 
