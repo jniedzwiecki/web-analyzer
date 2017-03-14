@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.response;
+package webanalyzer.response;
 
 import javax.ws.rs.core.Response;
 

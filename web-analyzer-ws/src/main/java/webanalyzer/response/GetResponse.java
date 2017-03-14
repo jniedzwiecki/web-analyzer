@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.response;
+package webanalyzer.response;
 
 /**
  * Created by jacekniedzwiecki on 08.03.2017.

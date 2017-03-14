@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.util;
+package webanalyzer.util;
 
 import java.util.function.Function;
 
@@ -24,5 +24,9 @@ public class FluentBuilder<T> {
 
     public T get() {
         return t;
+    }
+
+    public <U> U get(Function<T, U> func) {
+        return func.apply(t);
     }
 }

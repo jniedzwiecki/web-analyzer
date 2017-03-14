@@ -1,8 +1,8 @@
-package com.jani.webanalyzer;
+package webanalyzer;
 
-import com.jani.webanalyzer.configs.ServicesConfiguration;
-import com.jani.webanalyzer.exceptions.ToHttpErrorExceptionMapper;
-import com.jani.webanalyzer.services.WebAnalyzerService;
+import webanalyzer.configs.ServicesConfiguration;
+import webanalyzer.exceptions.ToHttpErrorExceptionMapper;
+import webanalyzer.services.WebAnalyzerService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**

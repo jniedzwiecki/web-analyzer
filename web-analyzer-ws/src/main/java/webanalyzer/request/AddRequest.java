@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.request;
+package webanalyzer.request;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

@@ -1,8 +1,8 @@
-package com.jani.webanalyzer.services;
+package webanalyzer.services;
 
-import com.jani.webanalyzer.request.AddRequest;
-import com.jani.webanalyzer.response.AddResponse;
-import com.jani.webanalyzer.response.GetResponse;
+import webanalyzer.request.AddRequest;
+import webanalyzer.response.AddResponse;
+import webanalyzer.response.GetResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.aspects;
+package webanalyzer.aspects;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;

@@ -1,11 +1,9 @@
-package com.jani.webanalyzer.configs;
+package webanalyzer.configs;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
-import com.jani.webanalyzer.aspects.LoggingAspect;
-import com.jani.webanalyzer.exceptions.ToHttpErrorExceptionMapper;
-import com.jani.webanalyzer.services.WebAnalyzer;
-import com.jani.webanalyzer.services.WebAnalyzerService;
-import com.jani.webanalyzer.util.FluentBuilder;
+import webanalyzer.aspects.LoggingAspect;
+import webanalyzer.exceptions.ToHttpErrorExceptionMapper;
+import webanalyzer.services.WebAnalyzer;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.feature.Feature;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
@@ -18,7 +16,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jani.webanalyzer.util.FluentBuilder.with;
+import static webanalyzer.util.FluentBuilder.with;
 
 /**
  * Created by jacekniedzwiecki on 05.03.2017.
