@@ -9,8 +9,9 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>web-analyzer-ws</module>
         <module>web-analyzer-app</module>
+        <module>web-analyzer-ws</module>
+        <module>web-analyzer-db</module>
     </modules>
 
     <properties>
@@ -131,6 +132,14 @@
                 <groupId>org.glassfish</groupId>
                 <artifactId>javax.el</artifactId>
                 <version>3.0-b01</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-releasetrain</artifactId>
+                <version>Ingalls-SR1</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
         </dependencies>
