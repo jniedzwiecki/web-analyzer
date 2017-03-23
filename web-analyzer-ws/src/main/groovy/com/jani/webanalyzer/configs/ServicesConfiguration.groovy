@@ -10,9 +10,11 @@ import org.apache.cxf.feature.Feature
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
+import org.springframework.context.annotation.PropertySource
 
 import static com.jani.webanalyzer.util.FluentBuilder.with
 /**
@@ -20,16 +22,21 @@ import static com.jani.webanalyzer.util.FluentBuilder.with
  */
 @Configuration
 @EnableAspectJAutoProxy
+@PropertySource("classpath:web-analyzer-ws.properties")
 @CompileStatic
 class ServicesConfiguration {
 
-    private static final String WEB_SERVICE_ADDRESS = "http://0.0.0.0:8080"
+    private String webServiceAddress
+
+    ServicesConfiguration(@Value("web-service.address") String webServiceAddress) {
+        this.webServiceAddress = webServiceAddress
+    }
 
     @Bean
     @Autowired
     Server rsServer(WebAnalyzer webAnalyzer) {
         JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean()
-        endpoint.setAddress(WEB_SERVICE_ADDRESS)
+        endpoint.setAddress(webServiceAddress)
         endpoint.setServiceBean(webAnalyzer)
         endpoint.setFeatures(
                 with(new ArrayList<Feature>())

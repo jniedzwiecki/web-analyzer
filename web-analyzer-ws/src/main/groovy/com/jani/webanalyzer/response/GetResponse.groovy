@@ -8,7 +8,7 @@ import groovy.transform.CompileStatic;
 @CompileStatic
 class GetResponse extends BaseResponse {
 
-    private final String path
+    final String path
 
     static GetResponse response(String path) {
         return new GetResponse(path)

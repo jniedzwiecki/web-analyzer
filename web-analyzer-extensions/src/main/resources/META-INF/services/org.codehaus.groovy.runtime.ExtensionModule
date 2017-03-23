@@ -1,0 +1,3 @@
+moduleName=web-analyzer-extensions
+moduleVersion=1.0-SNAPSHOT
+extensionClasses=com.jani.webanalyzer.extensions.ThrowableExtension
