@@ -13,6 +13,6 @@ import javax.validation.constraints.Pattern
 class AddRequest extends BaseRequest {
 
     @NotNull
-    @Pattern(regexp = "http://.*")
-    String path
+    @Pattern(regexp = "(http://.*)+")
+    String paths
 }

@@ -26,15 +26,10 @@ import static com.jani.webanalyzer.util.FluentBuilder.with
 @CompileStatic
 class ServicesConfiguration {
 
-    private String webServiceAddress
-
-    ServicesConfiguration(@Value("web-service.address") String webServiceAddress) {
-        this.webServiceAddress = webServiceAddress
-    }
-
     @Bean
     @Autowired
-    Server rsServer(WebAnalyzer webAnalyzer) {
+    Server rsServer(WebAnalyzer webAnalyzer,
+                    @Value('${web-service.address}') String webServiceAddress) {
         JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean()
         endpoint.setAddress(webServiceAddress)
         endpoint.setServiceBean(webAnalyzer)

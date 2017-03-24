@@ -1,8 +1,8 @@
 package com.jani.webanalyzer.response
 
-import groovy.transform.CompileStatic;
+import groovy.transform.CompileStatic
 
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response
 
 /**
  * Created by jacekniedzwiecki on 08.03.2017.
@@ -13,8 +13,8 @@ class AddResponse {
     final Response.Status status
     final int pathId
 
-    static AddResponse response(Response.Status status, int id) {
-        return new AddResponse(status, id)
+    static AddResponse response(Response.Status status) {
+        return new AddResponse(status, 0)
     }
 
     private AddResponse(Response.Status status, int pathId) {
@@ -27,6 +27,6 @@ class AddResponse {
         return "{ \"type\" : \"AddResponse\"," +
                 " \"status\" : \"" + status.toString() + "\", " +
                 " \"pathId\" : \"" + pathId + "\"" +
-                "}";
+                "}"
     }
 }

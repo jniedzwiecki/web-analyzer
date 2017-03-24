@@ -23,6 +23,15 @@ class FluentBuilder<T> {
         this
     }
 
+    T lastOp(Consumer<T> func) {
+        func.accept(t)
+        t
+    }
+
+    def <S> S andGet(Function<T, S> func) {
+        func.apply(t)
+    }
+
     T get() { t }
 
     def <U> U get(Function<T, U> func) {

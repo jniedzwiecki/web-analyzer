@@ -6,50 +6,67 @@ import com.jani.webanalyzer.response.GetResponse
 import groovy.transform.CompileStatic
 import org.apache.activemq.ActiveMQConnectionFactory
 import org.slf4j.Logger
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.PropertySource
 import org.springframework.stereotype.Service
 
-import javax.jms.ExceptionListener
-import javax.jms.JMSException
-import javax.jms.Session
+import javax.jms.*
 
+import static com.jani.webanalyzer.util.FluentBuilder.with
+import static javax.ws.rs.core.Response.Status.CREATED
 import static org.slf4j.LoggerFactory.getLogger
 /**
  * Created by jacekniedzwiecki on 06.03.2017.
  */
 @Service
 @CompileStatic
+@PropertySource('classpath:web-analyzer-ws.properties')
 class WebAnalyzerService implements WebAnalyzer {
 
     private static Logger logger = getLogger(WebAnalyzerService.class)
 
     private Session session
+    private MessageProducer producer
+    private Queue queue
 
-    WebAnalyzerService(@Value("activemq.endpoint") String activeMqEndpoint,
-                       @Value("addPaths.request.endpoint") String addPathsReqEndpoint) {
+    @Autowired
+    WebAnalyzerService(@Value('${activemq.endpoint}') String activeMqEndpoint,
+                       @Value('${addPaths.request.endpoint}') String addPathsReqEndpoint) {
 
-        def connection = new ActiveMQConnectionFactory(activeMqEndpoint).createConnection()
-        connection.start()
-        connection.setExceptionListener(new ExceptionListener() {
+        session = with(new ActiveMQConnectionFactory(activeMqEndpoint).createConnection())
+                .op { it.start() }
+                .op { it.setExceptionListener(new ExceptionListener() {
 
-            @Override
-            void onException(JMSException exception) {
-                logger.debug(exception.stackToString())
-            }
-        })
+                        @Override
+                        void onException(JMSException exception) {
+                            logger.debug(exception.stackToString())
+                        }
+                    }
+                )
+                }.andGet { it.createSession(true, Session.AUTO_ACKNOWLEDGE) }
 
-        session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE)
+        queue = session.createQueue(addPathsReqEndpoint)
+
+        producer = session.createProducer(queue)
+        producer.setDeliveryMode(DeliveryMode.PERSISTENT)
     }
 
     @Override
     AddResponse add(AddRequest addRequest) {
-//        return AddResponse.response(CREATED, paths.size() - 1)
-        null
+        producer.send(messageOf(addRequest.paths))
+
+        AddResponse.response(CREATED)
     }
 
     @Override
     GetResponse get(int id) {
 //        return GetResponse.response(paths.get(id))
         null
+    }
+
+    private Message messageOf(String message) {
+        with(session.createMessage())
+                .lastOp { it.setObjectProperty("message", message) }
     }
 }
