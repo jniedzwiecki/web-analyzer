@@ -1,8 +1,6 @@
 package com.jani.webanalyzer
 
 import groovy.transform.CompileStatic
-import org.apache.camel.Exchange
-import org.apache.camel.Predicate
 import org.apache.camel.spring.SpringCamelContext
 import org.apache.camel.spring.SpringRouteBuilder
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,17 +25,11 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
         this.addSinglePathEndpoint = activeMqEndpoint + addSinglePathEndpoint
 
         camelContext.addRoutes(this)
+        camelContext.start()
     }
 
     @Override
     void configure() throws Exception {
-        from(addPathsReqEndpoint).filter(
-            new Predicate() {
-                @Override
-                boolean matches(Exchange exchange) {
-                    return false
-                }
-            }
-        ).to(addSinglePathEndpoint)
+        from(addPathsReqEndpoint).to("log:com.jani.webanalyzer").to(addSinglePathEndpoint)
     }
 }

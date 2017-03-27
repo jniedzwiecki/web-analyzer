@@ -3,7 +3,6 @@ package com.jani.webanalyzer.services
 import com.jani.webanalyzer.request.AddRequest
 import com.jani.webanalyzer.response.AddResponse
 import com.jani.webanalyzer.response.GetResponse
-import groovy.transform.CompileStatic
 import org.apache.activemq.ActiveMQConnectionFactory
 import org.slf4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,14 +12,14 @@ import org.springframework.stereotype.Service
 
 import javax.jms.*
 
-import static com.jani.webanalyzer.util.FluentBuilder.with
+import static com.jani.webanalyzer.utils.FluentBuilder.with
 import static javax.ws.rs.core.Response.Status.CREATED
 import static org.slf4j.LoggerFactory.getLogger
 /**
  * Created by jacekniedzwiecki on 06.03.2017.
  */
 @Service
-@CompileStatic
+//@CompileStatic
 @PropertySource('classpath:web-analyzer-ws.properties')
 class WebAnalyzerService implements WebAnalyzer {
 
@@ -49,7 +48,11 @@ class WebAnalyzerService implements WebAnalyzer {
         queue = session.createQueue(addPathsReqEndpoint)
 
         producer = session.createProducer(queue)
-        producer.setDeliveryMode(DeliveryMode.PERSISTENT)
+        producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT)
+
+        session.createConsumer(queue).setMessageListener {
+            message -> logger.debug(message.getObjectProperty("message") as String)
+        }
     }
 
     @Override

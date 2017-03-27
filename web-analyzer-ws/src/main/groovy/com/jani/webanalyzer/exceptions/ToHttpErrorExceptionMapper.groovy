@@ -1,17 +1,15 @@
 package com.jani.webanalyzer.exceptions
 
-import groovy.transform.CompileStatic;
+import groovy.transform.CompileStatic
 import org.slf4j.Logger
 
 import javax.validation.ConstraintViolationException
 import javax.ws.rs.core.Response
 import javax.ws.rs.ext.ExceptionMapper
 
-import static com.jani.webanalyzer.util.FluentBuilder.with
-import static com.jani.webanalyzer.util.Util.stackTraceAsString
+import static com.jani.webanalyzer.utils.FluentBuilder.with
 import static javax.ws.rs.core.Response.Status.*
 import static org.slf4j.LoggerFactory.getLogger
-
 /**
  * Created by jacekniedzwiecki on 12.03.2017.
  */
@@ -30,7 +28,7 @@ class ToHttpErrorExceptionMapper implements ExceptionMapper {
                 .getOrDefault(with(exception).op {storeLog(it)} .get { it.getClass() }, Response.status(INTERNAL_SERVER_ERROR).build())
     }
 
-    private Throwable storeLog(Throwable throwable) {
+    private static Throwable storeLog(Throwable throwable) {
         logger.info(throwable.stackToString())
         return throwable
     }

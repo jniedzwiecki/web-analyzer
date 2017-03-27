@@ -1,6 +1,7 @@
-package com.jani.webanalyzer.util
+package com.jani.webanalyzer.utils
 
 import groovy.transform.CompileStatic
+
 /**
  * Created by jacekniedzwiecki on 21.03.2017.
  */

@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.util
+package com.jani.webanalyzer.utils
 
 import java.util.function.Consumer
 import java.util.function.Function

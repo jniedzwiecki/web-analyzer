@@ -70,5 +70,6 @@
     <orderEntry type="library" name="Maven: commons-net:commons-net:3.1" level="project" />
     <orderEntry type="library" name="Maven: org.jasypt:jasypt:1.9.0" level="project" />
     <orderEntry type="module" module-name="web-analyzer-extensions" />
+    <orderEntry type="module" module-name="web-analyzer-utils" />
   </component>
 </module>

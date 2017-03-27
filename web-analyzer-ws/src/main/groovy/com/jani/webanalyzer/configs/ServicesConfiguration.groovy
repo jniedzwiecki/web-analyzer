@@ -16,7 +16,8 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
 import org.springframework.context.annotation.PropertySource
 
-import static com.jani.webanalyzer.util.FluentBuilder.with
+import static com.jani.webanalyzer.utils.FluentBuilder.with
+
 /**
  * Created by jacekniedzwiecki on 05.03.2017.
  */
