@@ -108,7 +108,7 @@
         <!-- activemq -->
         <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-core</artifactId>
+            <artifactId>activemq-all</artifactId>
         </dependency>
 
         <!-- web-analyzer -->

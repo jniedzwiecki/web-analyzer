@@ -33,26 +33,18 @@ class WebAnalyzerService implements WebAnalyzer {
     WebAnalyzerService(@Value('${activemq.endpoint}') String activeMqEndpoint,
                        @Value('${addPaths.request.endpoint}') String addPathsReqEndpoint) {
 
-        session = with(new ActiveMQConnectionFactory(activeMqEndpoint).createConnection())
+        session = with(new ActiveMQConnectionFactory("vm://localhost?broker.persistent=false").createConnection())
                 .op { it.start() }
-                .op { it.setExceptionListener(new ExceptionListener() {
-
-                        @Override
-                        void onException(JMSException exception) {
-                            logger.debug(exception.stackToString())
+                .op { it.setExceptionListener {
+                        exception -> logger.debug(exception.stackToString())
                         }
                     }
-                )
-                }.andGet { it.createSession(true, Session.AUTO_ACKNOWLEDGE) }
+        .andGet { it.createSession(false, Session.AUTO_ACKNOWLEDGE) }
 
-        queue = session.createQueue(addPathsReqEndpoint)
+        queue = session.createQueue("addPaths.request")
 
         producer = session.createProducer(queue)
         producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT)
-
-        session.createConsumer(queue).setMessageListener {
-            message -> logger.debug(message.getObjectProperty("message") as String)
-        }
     }
 
     @Override
