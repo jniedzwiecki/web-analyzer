@@ -30,10 +30,10 @@ class WebAnalyzerService implements WebAnalyzer {
     private Queue queue
 
     @Autowired
-    WebAnalyzerService(@Value('${activemq.endpoint}') String activeMqEndpoint,
+    WebAnalyzerService(@Value('${activemq.broker.url}') String activeBrokerUrl,
                        @Value('${addPaths.request.endpoint}') String addPathsReqEndpoint) {
 
-        session = with(new ActiveMQConnectionFactory("vm://localhost?broker.persistent=false").createConnection())
+        session = with(new ActiveMQConnectionFactory(activeBrokerUrl).createConnection())
                 .op { it.start() }
                 .op { it.setExceptionListener {
                         exception -> logger.debug(exception.stackToString())
@@ -41,7 +41,7 @@ class WebAnalyzerService implements WebAnalyzer {
                     }
         .andGet { it.createSession(false, Session.AUTO_ACKNOWLEDGE) }
 
-        queue = session.createQueue("addPaths.request")
+        queue = session.createQueue(addPathsReqEndpoint)
 
         producer = session.createProducer(queue)
         producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT)

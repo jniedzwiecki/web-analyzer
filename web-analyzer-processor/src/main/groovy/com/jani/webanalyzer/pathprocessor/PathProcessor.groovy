@@ -27,10 +27,10 @@ class PathProcessor {
     Queue queue
 
     @Autowired
-    PathProcessor(@Value('${activemq.endpoint}') String activeMqEndpoint,
+    PathProcessor(@Value('${activemq.broker.url}') String activeBrokerUrl,
                   @Value('${addSinglePath.request.endpoint}') String addSinglePathReqEndpoint) {
 
-        session = with(new ActiveMQConnectionFactory("vm://localhost?broker.persistent=false").createConnection())
+        session = with(new ActiveMQConnectionFactory(activeBrokerUrl).createConnection())
                 .op { it.start() }
                 .op { it.setExceptionListener {
                         exception -> logger.debug(exception.stackToString())
@@ -38,11 +38,11 @@ class PathProcessor {
                 }
         .andGet { it.createSession(false, Session.AUTO_ACKNOWLEDGE) }
 
-        queue = session.createQueue("addSinglePath.request")
+        queue = session.createQueue(addSinglePathReqEndpoint)
 
         consumer = session.createConsumer(queue)
         consumer.setMessageListener {
-             message -> logger.debug(message.getObjectProperty("message") as String)
+             message -> println(message.toString())
         }
     }
 }

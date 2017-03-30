@@ -22,11 +22,11 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
     SpringCamelContext camelContext
 
     @Autowired
-    WebAnalyzerRoutesBuilder(@Value('${activemq.endpoint}') String activeMqEndpoint,
+    WebAnalyzerRoutesBuilder(@Value('${activemq.broker.url}') String activeBrokerUrl,
                              @Value('${addPaths.request.endpoint}') String addPathsReqEndpoint,
                              @Value('${addSinglePath.request.endpoint}') String addSinglePathEndpoint,
                              SpringCamelContext camelContext) {
-        camelContext.addComponent("activemq", activeMQComponent("vm://localhost?broker.persistent=false"))
+        camelContext.addComponent("activemq", activeMQComponent(activeBrokerUrl))
         camelContext.start()
         this.camelContext = camelContext
 
@@ -41,6 +41,6 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
 
     @Override
     void configure() throws Exception {
-        from(addPathsReqEndpoint).log("XXXXXXXXXXXX").to(addSinglePathEndpoint)
+        from("activemq:" + addPathsReqEndpoint).to("activemq:" + addSinglePathEndpoint)
     }
 }
