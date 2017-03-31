@@ -25,7 +25,7 @@ class ToHttpErrorExceptionMapper implements ExceptionMapper {
 
     Response toResponse(Throwable exception) {
         return errorResponseBasedOnException
-                .getOrDefault(with(exception).op {storeLog(it)} .get { it.getClass() }, Response.status(INTERNAL_SERVER_ERROR).build())
+                .getOrDefault(with(exception).op {storeLog(it)} .map { it.getClass() }, Response.status(INTERNAL_SERVER_ERROR).build())
     }
 
     private static Throwable storeLog(Throwable throwable) {

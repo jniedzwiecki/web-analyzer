@@ -1,7 +1,6 @@
 package com.jani.webanalyzer
 
 import groovy.transform.CompileStatic
-import org.apache.camel.builder.ExpressionBuilder
 import org.apache.camel.spring.SpringCamelContext
 import org.apache.camel.spring.SpringRouteBuilder
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
 import static org.apache.activemq.camel.component.ActiveMQComponent.activeMQComponent
+import static org.apache.camel.builder.ExpressionBuilder.languageExpression
 /**
  * Created by jacekniedzwiecki on 24.03.2017.
  */
@@ -45,10 +45,8 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
 
     @Override
     void configure() throws Exception {
-        def expression = ExpressionBuilder.languageExpression("jsonpath", '$.[*]')
-
         from(addPathsReqEndpoint)
-                .split(expression)
+                .split(languageExpression("jsonpath", '$.[*]'))
                 .to(addSinglePathEndpoint)
     }
 }

@@ -34,7 +34,7 @@ class FluentBuilder<T> {
 
     T get() { t }
 
-    def <U> U get(Function<T, U> func) {
+    def <U> U map(Function<T, U> func) {
         func.apply(t)
     }
 }
