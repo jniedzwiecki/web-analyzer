@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import groovy.transform.Immutable
 
 import javax.validation.constraints.NotNull
-import javax.validation.constraints.Pattern
 /**
  * Created by jacekniedzwiecki on 08.03.2017.
  */
@@ -13,6 +12,5 @@ import javax.validation.constraints.Pattern
 class AddRequest extends BaseRequest {
 
     @NotNull
-    @Pattern(regexp = "(http://.*)+")
-    String paths
+    List<String> paths
 }

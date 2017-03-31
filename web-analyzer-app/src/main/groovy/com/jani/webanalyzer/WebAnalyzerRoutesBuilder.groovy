@@ -1,6 +1,7 @@
 package com.jani.webanalyzer
 
 import groovy.transform.CompileStatic
+import org.apache.camel.builder.ExpressionBuilder
 import org.apache.camel.spring.SpringCamelContext
 import org.apache.camel.spring.SpringRouteBuilder
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,6 +18,8 @@ import static org.apache.activemq.camel.component.ActiveMQComponent.activeMQComp
 @CompileStatic
 class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
 
+    final static String ACTIVEMQ_PREFIX = "activemq:"
+
     String addPathsReqEndpoint
     String addSinglePathEndpoint
     SpringCamelContext camelContext
@@ -27,11 +30,12 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
                              @Value('${addSinglePath.request.endpoint}') String addSinglePathEndpoint,
                              SpringCamelContext camelContext) {
         camelContext.addComponent("activemq", activeMQComponent(activeBrokerUrl))
+        camelContext.tracing = true
         camelContext.start()
         this.camelContext = camelContext
 
-        this.addPathsReqEndpoint = addPathsReqEndpoint
-        this.addSinglePathEndpoint = addSinglePathEndpoint
+        this.addPathsReqEndpoint = ACTIVEMQ_PREFIX + addPathsReqEndpoint
+        this.addSinglePathEndpoint = ACTIVEMQ_PREFIX + addSinglePathEndpoint
     }
 
     @PostConstruct
@@ -41,6 +45,10 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
 
     @Override
     void configure() throws Exception {
-        from("activemq:" + addPathsReqEndpoint).to("activemq:" + addSinglePathEndpoint)
+        def expression = ExpressionBuilder.languageExpression("jsonpath", '$.[*]')
+
+        from(addPathsReqEndpoint)
+                .split(expression)
+                .to(addSinglePathEndpoint)
     }
 }

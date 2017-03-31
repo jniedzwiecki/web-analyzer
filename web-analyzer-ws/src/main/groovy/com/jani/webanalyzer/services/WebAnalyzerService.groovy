@@ -1,8 +1,10 @@
 package com.jani.webanalyzer.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.jani.webanalyzer.request.AddRequest
 import com.jani.webanalyzer.response.AddResponse
 import com.jani.webanalyzer.response.GetResponse
+import groovy.transform.CompileStatic
 import org.apache.activemq.ActiveMQConnectionFactory
 import org.slf4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,7 +21,6 @@ import static org.slf4j.LoggerFactory.getLogger
  * Created by jacekniedzwiecki on 06.03.2017.
  */
 @Service
-//@CompileStatic
 @PropertySource('classpath:web-analyzer-ws.properties')
 class WebAnalyzerService implements WebAnalyzer {
 
@@ -28,6 +29,7 @@ class WebAnalyzerService implements WebAnalyzer {
     private Session session
     private MessageProducer producer
     private Queue queue
+    private ObjectMapper objectMapper = new ObjectMapper()
 
     @Autowired
     WebAnalyzerService(@Value('${activemq.broker.url}') String activeBrokerUrl,
@@ -37,8 +39,8 @@ class WebAnalyzerService implements WebAnalyzer {
                 .op { it.start() }
                 .op { it.setExceptionListener {
                         exception -> logger.debug(exception.stackToString())
-                        }
                     }
+                }
         .andGet { it.createSession(false, Session.AUTO_ACKNOWLEDGE) }
 
         queue = session.createQueue(addPathsReqEndpoint)
@@ -48,6 +50,7 @@ class WebAnalyzerService implements WebAnalyzer {
     }
 
     @Override
+    @CompileStatic
     AddResponse add(AddRequest addRequest) {
         producer.send(messageOf(addRequest.paths))
 
@@ -60,8 +63,8 @@ class WebAnalyzerService implements WebAnalyzer {
         null
     }
 
-    private Message messageOf(String message) {
-        with(session.createMessage())
-                .lastOp { it.setObjectProperty("message", message) }
+    private Message messageOf(List<String> paths) {
+        with(session.createTextMessage())
+                .lastOp { it.setText(objectMapper.writeValueAsString(paths)) }
     }
 }
