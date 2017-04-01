@@ -1,6 +1,8 @@
 package com.jani.webanalyzer
 
-import groovy.transform.CompileStatic
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.jani.webanalyzer.model.request.AddPathsRequest
+import com.jani.webanalyzer.model.request.AddSinglePathRequest
 import org.apache.camel.spring.SpringCamelContext
 import org.apache.camel.spring.SpringRouteBuilder
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,13 +11,13 @@ import org.springframework.stereotype.Component
 
 import javax.annotation.PostConstruct
 
+import static com.jani.webanalyzer.utils.FluentBuilder.with
+import static java.util.stream.Collectors.joining
 import static org.apache.activemq.camel.component.ActiveMQComponent.activeMQComponent
-import static org.apache.camel.builder.ExpressionBuilder.languageExpression
 /**
  * Created by jacekniedzwiecki on 24.03.2017.
  */
 @Component
-@CompileStatic
 class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
 
     final static String ACTIVEMQ_PREFIX = "activemq:"
@@ -23,6 +25,7 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
     String addPathsReqEndpoint
     String addSinglePathEndpoint
     SpringCamelContext camelContext
+    ObjectMapper objectMapper = new ObjectMapper()
 
     @Autowired
     WebAnalyzerRoutesBuilder(@Value('${activemq.broker.url}') String activeBrokerUrl,
@@ -46,7 +49,19 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
     @Override
     void configure() throws Exception {
         from(addPathsReqEndpoint)
-                .split(languageExpression("jsonpath", '$.[*]'))
-                .to(addSinglePathEndpoint)
+            .process(singlePathExtractingProcessor)
+            .to(addSinglePathEndpoint)
+    }
+
+    final def singlePathExtractingProcessor = {
+        exchange ->
+            def singlePathRequests =
+                    with(objectMapper.readValue((exchange.getIn().getBody() as String), AddPathsRequest)).map {
+                        req -> req.paths.stream()
+                                .map { path -> new AddSinglePathRequest(req.uuid, path) }
+                                .map { objectMapper.writeValueAsString(it) }
+                                .collect(joining())
+                    }
+            exchange.getOut().setBody(singlePathRequests)
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service
 import javax.jms.MessageConsumer
 import javax.jms.Queue
 import javax.jms.Session
+import javax.jms.TextMessage
 
 import static com.jani.webanalyzer.utils.FluentBuilder.with
 import static org.slf4j.LoggerFactory.getLogger
@@ -42,7 +43,7 @@ class PathProcessor {
 
         consumer = session.createConsumer(queue)
         consumer.setMessageListener {
-             message -> println(message.toString())
+             println(with(it).map { it as TextMessage }.getText())
         }
     }
 }
