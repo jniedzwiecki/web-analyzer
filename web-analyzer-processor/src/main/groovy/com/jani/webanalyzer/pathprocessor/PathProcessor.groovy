@@ -1,5 +1,7 @@
 package com.jani.webanalyzer.pathprocessor
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.jani.webanalyzer.model.request.AddSinglePathRequest
 import org.apache.activemq.ActiveMQConnectionFactory
 import org.slf4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,6 +28,7 @@ class PathProcessor {
     Session session
     MessageConsumer consumer
     Queue queue
+    ObjectMapper objectMapper = new ObjectMapper()
 
     @Autowired
     PathProcessor(@Value('${activemq.broker.url}') String activeBrokerUrl,
@@ -43,7 +46,8 @@ class PathProcessor {
 
         consumer = session.createConsumer(queue)
         consumer.setMessageListener {
-             println(with(it).map { it as TextMessage }.getText())
+            def singlePathRequest = objectMapper.readValue((it as TextMessage).text, AddSinglePathRequest)
+            println(singlePathRequest.getOriginalUuid().toString())
         }
     }
 }

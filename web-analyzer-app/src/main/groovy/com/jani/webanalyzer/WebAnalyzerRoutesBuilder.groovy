@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
 import static com.jani.webanalyzer.utils.FluentBuilder.with
-import static java.util.stream.Collectors.joining
+import static java.util.stream.Collectors.toList
 import static org.apache.activemq.camel.component.ActiveMQComponent.activeMQComponent
 /**
  * Created by jacekniedzwiecki on 24.03.2017.
@@ -50,6 +50,8 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
     void configure() throws Exception {
         from(addPathsReqEndpoint)
             .process(singlePathExtractingProcessor)
+            .split(body())
+            .process(objectToJSonProcessor)
             .to(addSinglePathEndpoint)
     }
 
@@ -59,9 +61,12 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
                     with(objectMapper.readValue((exchange.getIn().getBody() as String), AddPathsRequest)).map {
                         req -> req.paths.stream()
                                 .map { path -> new AddSinglePathRequest(req.uuid, path) }
-                                .map { objectMapper.writeValueAsString(it) }
-                                .collect(joining())
+                                .collect(toList())
                     }
             exchange.getOut().setBody(singlePathRequests)
+    }
+
+    final def objectToJSonProcessor = {
+        exchange -> exchange.getOut().setBody(objectMapper.writeValueAsString(exchange.getIn().getBody()))
     }
 }
