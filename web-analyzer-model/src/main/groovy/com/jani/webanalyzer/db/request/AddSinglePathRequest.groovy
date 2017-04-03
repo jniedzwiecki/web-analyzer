@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.model.request
+package com.jani.webanalyzer.db.request
 
 import com.sun.istack.internal.NotNull
 
@@ -7,7 +7,10 @@ import com.sun.istack.internal.NotNull
  */
 class AddSinglePathRequest extends BaseRequest implements Aggregable {
 
+    AddSinglePathRequest() {}
+
     AddSinglePathRequest(UUID originalUuid, String path) {
+        this()
         this.originalUuid = originalUuid
         this.path = path
     }

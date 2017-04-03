@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.model.response
+package com.jani.webanalyzer.db.response
 
 import groovy.transform.CompileStatic;
 
@@ -6,5 +6,5 @@ import groovy.transform.CompileStatic;
  * Created by jacekniedzwiecki on 18.03.2017.
  */
 @CompileStatic
-class BaseResponse {
+class AddPathsResponse extends BaseResponse {
 }

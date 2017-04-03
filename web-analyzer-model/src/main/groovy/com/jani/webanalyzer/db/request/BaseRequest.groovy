@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.model.request
+package com.jani.webanalyzer.db.request
 
 import groovy.transform.CompileStatic
 import javax.validation.constraints.NotNull

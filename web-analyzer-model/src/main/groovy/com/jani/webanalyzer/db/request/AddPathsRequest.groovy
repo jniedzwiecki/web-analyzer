@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.model.request
+package com.jani.webanalyzer.db.request
 
 import com.sun.istack.internal.NotNull
 import groovy.transform.CompileStatic
