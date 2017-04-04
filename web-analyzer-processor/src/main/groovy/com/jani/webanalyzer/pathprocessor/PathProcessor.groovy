@@ -1,7 +1,7 @@
 package com.jani.webanalyzer.pathprocessor
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.jani.webanalyzer.db.request.AddSinglePathRequest
+import com.jani.webanalyzer.request.AddSinglePathRequest
 import org.apache.activemq.ActiveMQConnectionFactory
 import org.slf4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,6 +16,7 @@ import javax.jms.TextMessage
 
 import static com.jani.webanalyzer.utils.FluentBuilder.with
 import static org.slf4j.LoggerFactory.getLogger
+
 /**
  * Created by jacekniedzwiecki on 24.03.2017.
  */

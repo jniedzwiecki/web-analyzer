@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.db.request
+package com.jani.webanalyzer.request
 
 import com.sun.istack.internal.NotNull
 /**

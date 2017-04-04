@@ -1,8 +1,8 @@
 package com.jani.webanalyzer
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.jani.webanalyzer.db.request.AddPathsRequest
-import com.jani.webanalyzer.db.request.AddSinglePathRequest
+import com.jani.webanalyzer.request.AddPathsRequest
+import com.jani.webanalyzer.request.AddSinglePathRequest
 import org.apache.camel.spring.SpringCamelContext
 import org.apache.camel.spring.SpringRouteBuilder
 import org.springframework.beans.factory.annotation.Autowired
