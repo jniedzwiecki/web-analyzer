@@ -1,12 +1,11 @@
 package com.jani.webanalyzer.db
 
-import org.springframework.stereotype.Component
-
+import com.jani.webanalyzer.db.request.BaseRequest
+import org.springframework.data.repository.CrudRepository
 /**
  * Created by jacekniedzwiecki on 03.04.2017.
  */
-@Component
-class RequestRepository {
+interface RequestRepository extends CrudRepository<BaseRequest, UUID> {
 
 
 }
