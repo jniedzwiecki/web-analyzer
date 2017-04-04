@@ -1,9 +1,9 @@
-package com.jani.webanalyzer.configs
+package com.jani.webanalyzer.ws.configs
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider
-import com.jani.webanalyzer.aspects.LoggingAspect
-import com.jani.webanalyzer.exceptions.ToHttpErrorExceptionMapper
-import com.jani.webanalyzer.services.WebAnalyzer
+import com.jani.webanalyzer.ws.aspects.LoggingAspect
+import com.jani.webanalyzer.ws.exceptions.ToHttpErrorExceptionMapper
+import com.jani.webanalyzer.ws.services.WebAnalyzer
 import groovy.transform.CompileStatic
 import org.apache.cxf.endpoint.Server
 import org.apache.cxf.feature.Feature

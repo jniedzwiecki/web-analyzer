@@ -1,8 +1,8 @@
-package com.jani.webanalyzer.services
+package com.jani.webanalyzer.ws.services
 
 import com.jani.webanalyzer.ws.request.AddRequest
-import com.jani.webanalyzer.response.AddResponse
-import com.jani.webanalyzer.response.GetResponse
+import com.jani.webanalyzer.ws.response.AddResponse
+import com.jani.webanalyzer.ws.response.GetResponse
 import groovy.transform.CompileStatic
 
 import javax.validation.Valid

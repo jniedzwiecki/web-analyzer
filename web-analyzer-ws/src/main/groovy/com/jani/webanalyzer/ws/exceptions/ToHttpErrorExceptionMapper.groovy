@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.exceptions
+package com.jani.webanalyzer.ws.exceptions
 
 import groovy.transform.CompileStatic
 import org.slf4j.Logger

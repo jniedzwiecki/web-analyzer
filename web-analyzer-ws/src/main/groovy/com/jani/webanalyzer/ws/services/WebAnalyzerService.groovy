@@ -1,10 +1,10 @@
-package com.jani.webanalyzer.services
+package com.jani.webanalyzer.ws.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jani.webanalyzer.db.request.BaseRequest
 import com.jani.webanalyzer.ws.request.AddRequest
-import com.jani.webanalyzer.response.AddResponse
-import com.jani.webanalyzer.response.GetResponse
+import com.jani.webanalyzer.ws.response.AddResponse
+import com.jani.webanalyzer.ws.response.GetResponse
 import groovy.transform.CompileStatic
 import org.apache.activemq.ActiveMQConnectionFactory
 import org.slf4j.Logger
@@ -19,6 +19,7 @@ import static com.jani.webanalyzer.db.request.AddPathsRequest.addPathsRequest
 import static com.jani.webanalyzer.utils.FluentBuilder.with
 import static javax.ws.rs.core.Response.Status.CREATED
 import static org.slf4j.LoggerFactory.getLogger
+
 /**
  * Created by jacekniedzwiecki on 06.03.2017.
  */
