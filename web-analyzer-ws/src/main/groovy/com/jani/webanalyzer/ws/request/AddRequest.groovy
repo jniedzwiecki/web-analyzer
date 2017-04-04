@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.request
+package com.jani.webanalyzer.ws.request
 
 import groovy.transform.CompileStatic
 import groovy.transform.Immutable
