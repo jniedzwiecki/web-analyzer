@@ -1,14 +1,16 @@
 package com.jani.webanalyzer.db.request
 
 import groovy.transform.CompileStatic
-import javax.validation.constraints.NotNull
 
+import javax.persistence.Id
+import javax.validation.constraints.NotNull
 /**
  * Created by jacekniedzwiecki on 17.03.2017.
  */
 @CompileStatic
 abstract class BaseRequest {
 
+    @Id
     @NotNull
     UUID uuid
 
