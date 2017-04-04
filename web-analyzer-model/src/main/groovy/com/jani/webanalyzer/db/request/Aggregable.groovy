@@ -6,4 +6,12 @@ package com.jani.webanalyzer.db.request
 trait Aggregable {
 
     UUID originalUuid
+
+    def getOriginalUuid() {
+        originalUuid
+    }
+
+    def setOriginalUuid(UUID originalUuid) {
+        this.originalUuid = originalUuid
+    }
 }
