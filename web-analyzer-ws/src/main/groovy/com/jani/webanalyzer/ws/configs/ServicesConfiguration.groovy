@@ -45,11 +45,11 @@ class ServicesConfiguration {
         providers.add(new ToHttpErrorExceptionMapper())
         endpoint.setProviders(providers)
 
-        return endpoint.create()
+        endpoint.create()
     }
 
     @Bean
     LoggingAspect loggingAspect() {
-        return new LoggingAspect()
+        new LoggingAspect()
     }
 }

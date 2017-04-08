@@ -1,5 +1,6 @@
 package com.jani.webanalyzer
 
+import com.jani.webanalyzer.db.StorageConfig
 import com.jani.webanalyzer.db.StorageService
 import com.jani.webanalyzer.pathprocessor.PathProcessor
 import com.jani.webanalyzer.ws.configs.ServicesConfiguration
@@ -28,6 +29,7 @@ class Application {
                 WebAnalyzerRoutesBuilder.class,
                 PathProcessor.class,
                 Application.class,
+                StorageConfig.class,
                 StorageService.class
         )
         ctx.start()

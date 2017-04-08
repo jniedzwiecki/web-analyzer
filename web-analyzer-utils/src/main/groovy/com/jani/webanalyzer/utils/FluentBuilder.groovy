@@ -23,6 +23,11 @@ class FluentBuilder<T> {
         this
     }
 
+    FluentBuilder<T> op(List<Consumer<T>> list) {
+        list.forEach { it.accept(t) }
+        this
+    }
+
     T lastOp(Consumer<T> func) {
         func.accept(t)
         t

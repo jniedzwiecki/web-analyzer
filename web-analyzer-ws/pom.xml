@@ -114,7 +114,7 @@
         <!-- activemq -->
         <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-all</artifactId>
+            <artifactId>activemq-client</artifactId>
         </dependency>
 
         <!-- web-analyzer -->
