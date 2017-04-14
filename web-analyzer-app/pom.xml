@@ -69,6 +69,11 @@
             <artifactId>activemq-pool</artifactId>
             <version>5.14.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-test</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

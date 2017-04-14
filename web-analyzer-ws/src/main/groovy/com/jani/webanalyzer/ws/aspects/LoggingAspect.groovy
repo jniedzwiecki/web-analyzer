@@ -2,6 +2,7 @@ package com.jani.webanalyzer.ws.aspects
 
 import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.annotation.After
+import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Before
 
@@ -12,12 +13,27 @@ import org.aspectj.lang.annotation.Before
 class LoggingAspect {
 
     @Before("execution(public * com.jani.webanalyzer.ws.services.*Service.*(..))")
-    static void logBefore(JoinPoint joinPoint) {
+    static void logBeforeWs(JoinPoint joinPoint) {
         System.out.println("Before: " + joinPoint.getSignature().toString())
     }
 
     @After("execution(public * com.jani.webanalyzer.ws.services.*Service.*(..))")
-    static void logAfter(JoinPoint joinPoint) {
+    static void logAfterWs(JoinPoint joinPoint) {
         System.out.println("After: " + joinPoint.getSignature().toString())
+    }
+
+    @Before("execution(public * com.jani.webanalyzer.pathprocessor.*Processor.*(..))")
+    static void logBeforeProcessor(JoinPoint joinPoint) {
+        System.out.println("Before: " + joinPoint.getSignature().toString())
+    }
+
+    @After("execution(public * com.jani.webanalyzer.pathprocessor.*Processor.*(..))")
+    static void logAfterProcessor(JoinPoint joinPoint) {
+        System.out.println("After: " + joinPoint.getSignature().toString())
+    }
+
+    @Around("execution(public * com.jani.webanalyzer.db.*Service.*(..))")
+    static void logAroundDbService(JoinPoint joinPoint) {
+        System.out.println("Around: " + joinPoint.getSignature().toString())
     }
 }
