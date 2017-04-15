@@ -7,6 +7,7 @@ import com.jani.webanalyzer.ws.configs.ServicesConfiguration
 import com.jani.webanalyzer.ws.exceptions.ToHttpErrorExceptionMapper
 import com.jani.webanalyzer.ws.services.WebAnalyzerService
 import org.apache.camel.spring.SpringCamelContext
+import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -41,7 +42,7 @@ class Application {
     }
 
     @Bean
-    SpringCamelContext camelContext() {
-        with(new SpringCamelContext()).lastOp { it.setAutoStartup(true) }
+    SpringCamelContext camelContext(ApplicationContext ctx) {
+        with(new SpringCamelContext(ctx)).lastOp { it.setAutoStartup(true) }
     }
 }

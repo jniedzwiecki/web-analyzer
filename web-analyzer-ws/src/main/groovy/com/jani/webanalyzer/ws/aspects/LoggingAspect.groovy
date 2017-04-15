@@ -2,10 +2,8 @@ package com.jani.webanalyzer.ws.aspects
 
 import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.annotation.After
-import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Before
-
 /**
  * Created by jacekniedzwiecki on 11.03.2017.
  */
@@ -30,10 +28,5 @@ class LoggingAspect {
     @After("execution(public * com.jani.webanalyzer.pathprocessor.*Processor.*(..))")
     static void logAfterProcessor(JoinPoint joinPoint) {
         System.out.println("After: " + joinPoint.getSignature().toString())
-    }
-
-    @Around("execution(public * com.jani.webanalyzer.db.*Service.*(..))")
-    static void logAroundDbService(JoinPoint joinPoint) {
-        System.out.println("Around: " + joinPoint.getSignature().toString())
     }
 }

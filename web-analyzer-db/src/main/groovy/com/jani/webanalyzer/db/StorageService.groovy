@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service
 @Service
 class StorageService {
 
-    RequestRepository requestRepository
+    static RequestRepository requestRepository
 
     @Autowired
     StorageService(RequestRepository requestRepository) {
         this.requestRepository = requestRepository
     }
 
-    AddSinglePathRequest storeRequest(AddSinglePathRequest request) {
+    static AddSinglePathRequest storeRequest(AddSinglePathRequest request) {
         requestRepository.save(request)
     }
 }

@@ -62,9 +62,12 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
         from(addPathsReqEndpoint)
             .process(singlePathExtractingProcessor)
             .split(simple('${body}'))
-            .wireTap('bean:storageService?method=storeRequest(${bodyAs(com.jani.webanalyzer.request.AddSinglePathRequest)})')
+            .wireTap("direct:storeRequest")
             .process(objectToJSonProcessor)
             .to(addSinglePathEndpoint)
+
+        from("direct:storeRequest")
+                .bean(storageService, 'storeRequest')
     }
 
     static final Processor singlePathExtractingProcessor = new Processor() {
