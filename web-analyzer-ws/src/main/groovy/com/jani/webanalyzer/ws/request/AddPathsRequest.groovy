@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull
  */
 @CompileStatic
 @Immutable
-class AddRequest extends BaseRequest {
+class AddPathsRequest extends BaseRequest {
 
     @NotNull
     List<String> paths

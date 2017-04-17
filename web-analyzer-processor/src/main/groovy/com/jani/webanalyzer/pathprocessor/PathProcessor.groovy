@@ -19,7 +19,7 @@ import static org.slf4j.LoggerFactory.getLogger
 
 /**
  * Created by jacekniedzwiecki on 24.03.2017.
-        */
+ */
 @Service
 @PropertySource('classpath:web-analyzer-ws.properties')
 class PathProcessor {

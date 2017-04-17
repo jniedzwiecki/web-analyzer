@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response
  * Created by jacekniedzwiecki on 08.03.2017.
  */
 @CompileStatic
-class AddResponse {
+class AddResponse extends BaseResponse {
 
     final Response.Status status
     final UUID pathId

@@ -1,8 +1,8 @@
 package com.jani.webanalyzer.ws.services
 
-import com.jani.webanalyzer.ws.request.AddRequest
+import com.jani.webanalyzer.ws.request.AddPathsRequest
 import com.jani.webanalyzer.ws.response.AddResponse
-import com.jani.webanalyzer.ws.response.GetResponse
+import com.jani.webanalyzer.ws.response.GetPathResponse
 import groovy.transform.CompileStatic
 
 import javax.validation.Valid
@@ -19,9 +19,10 @@ import javax.ws.rs.core.MediaType
 interface WebAnalyzer {
 
     @POST
-    AddResponse add(@Valid AddRequest request)
+    @Path("/paths")
+    AddResponse add(@Valid AddPathsRequest request)
 
     @GET
-    @Path("/{id}")
-    GetResponse get(@PathParam("id") int id)
+    @Path("/path/{id}")
+    GetPathResponse getPath(@PathParam("id") UUID id)
 }

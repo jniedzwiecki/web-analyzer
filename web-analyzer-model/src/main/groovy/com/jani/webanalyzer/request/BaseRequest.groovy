@@ -14,9 +14,5 @@ abstract class BaseRequest {
 
     @Id
     @NotNull
-    UUID uuid
-
-    BaseRequest() {
-        uuid = UUID.randomUUID()
-    }
+    UUID uuid = UUID.randomUUID()
 }
