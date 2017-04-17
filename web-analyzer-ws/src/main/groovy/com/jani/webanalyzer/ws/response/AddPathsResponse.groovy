@@ -8,16 +8,16 @@ import javax.ws.rs.core.Response
  * Created by jacekniedzwiecki on 08.03.2017.
  */
 @CompileStatic
-class AddResponse extends BaseResponse {
+class AddPathsResponse extends BaseResponse {
 
     final Response.Status status
     final UUID pathId
 
-    static AddResponse response(Response.Status status, UUID pathId) {
-        return new AddResponse(status, pathId)
+    static AddPathsResponse addPathsResponse(Response.Status status, UUID pathId) {
+        return new AddPathsResponse(status, pathId)
     }
 
-    private AddResponse(Response.Status status, UUID pathId) {
+    private AddPathsResponse(Response.Status status, UUID pathId) {
         this.status = status
         this.pathId = pathId
     }

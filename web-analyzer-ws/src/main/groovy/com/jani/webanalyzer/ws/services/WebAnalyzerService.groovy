@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.jani.webanalyzer.reponse.GetPathResponse
 import com.jani.webanalyzer.request.BaseRequest
 import com.jani.webanalyzer.request.GetPathRequest
-import com.jani.webanalyzer.ws.request.AddPathsRequest
-import com.jani.webanalyzer.ws.response.AddResponse
+import com.jani.webanalyzer.ws.request.AddPathsRequest as WsAddPathsRequest
+import com.jani.webanalyzer.ws.response.AddPathsResponse as WsAddPathsResponse
 import com.jani.webanalyzer.ws.response.GetPathResponse as WsGetPathResponse
 import groovy.transform.CompileStatic
 import org.apache.activemq.ActiveMQConnectionFactory
@@ -72,10 +72,10 @@ class WebAnalyzerService implements WebAnalyzer {
 
     @Override
     @CompileStatic
-    AddResponse add(AddPathsRequest addRequest) {
+    WsAddPathsResponse add(WsAddPathsRequest addRequest) {
         with(addPathsRequest(addRequest.paths))
                 .op { this.addPathsProducer.send(messageOf(it)) }
-                .map { AddResponse.response(CREATED, it.uuid) }
+                .map { WsAddPathsResponse.addPathsResponse(CREATED, it.uuid) }
     }
 
     @Override
