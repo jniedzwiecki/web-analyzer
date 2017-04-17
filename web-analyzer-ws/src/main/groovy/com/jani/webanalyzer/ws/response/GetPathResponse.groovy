@@ -1,6 +1,6 @@
 package com.jani.webanalyzer.ws.response
 
-import com.jani.webanalyzer.reponse.PathStatus
+import com.jani.webanalyzer.model.reponse.PathStatus
 import groovy.transform.CompileStatic;
 
 /**

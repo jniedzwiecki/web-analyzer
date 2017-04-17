@@ -1,9 +1,9 @@
 package com.jani.webanalyzer.ws.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.jani.webanalyzer.reponse.GetPathResponse
-import com.jani.webanalyzer.request.BaseRequest
-import com.jani.webanalyzer.request.GetPathRequest
+import com.jani.webanalyzer.model.reponse.GetPathResponse
+import com.jani.webanalyzer.model.request.BaseRequest
+import com.jani.webanalyzer.model.request.GetPathRequest
 import com.jani.webanalyzer.ws.request.AddPathsRequest as WsAddPathsRequest
 import com.jani.webanalyzer.ws.response.AddPathsResponse as WsAddPathsResponse
 import com.jani.webanalyzer.ws.response.GetPathResponse as WsGetPathResponse
@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service
 
 import javax.jms.*
 
-import static com.jani.webanalyzer.request.AddPathsRequest.addPathsRequest
-import static com.jani.webanalyzer.request.GetPathRequest.getPathRequest
+import static com.jani.webanalyzer.model.request.AddPathsRequest.addPathsRequest
+import static com.jani.webanalyzer.model.request.GetPathRequest.getPathRequest
 import static com.jani.webanalyzer.utils.FluentBuilder.with
 import static com.jani.webanalyzer.ws.response.GetPathResponse.getPathResponse
 import static javax.ws.rs.core.Response.Status.CREATED

@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.reponse
+package com.jani.webanalyzer.model.reponse
 
 import groovy.transform.CompileStatic
 

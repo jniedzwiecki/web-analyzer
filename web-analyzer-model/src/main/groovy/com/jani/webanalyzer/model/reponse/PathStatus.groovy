@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.reponse
+package com.jani.webanalyzer.model.reponse
 
 /**
  * Created by jacekniedzwiecki on 18.04.2017.

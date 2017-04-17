@@ -1,6 +1,6 @@
 package com.jani.webanalyzer.db
 
-import com.jani.webanalyzer.request.BaseRequest
+import com.jani.webanalyzer.model.request.BaseRequest
 import org.springframework.data.repository.CrudRepository
 /**
  * Created by jacekniedzwiecki on 03.04.2017.

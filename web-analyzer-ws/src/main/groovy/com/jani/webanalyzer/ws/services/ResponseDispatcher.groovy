@@ -1,8 +1,8 @@
 package com.jani.webanalyzer.ws.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.jani.webanalyzer.reponse.BaseResponse
-import com.jani.webanalyzer.request.BaseRequest
+import com.jani.webanalyzer.model.reponse.BaseResponse
+import com.jani.webanalyzer.model.request.BaseRequest
 
 import javax.jms.Message
 import javax.jms.MessageListener

@@ -1,4 +1,4 @@
-package com.jani.webanalyzer.request
+package com.jani.webanalyzer.model.request
 
 /**
  * Created by jacekniedzwiecki on 01.04.2017.

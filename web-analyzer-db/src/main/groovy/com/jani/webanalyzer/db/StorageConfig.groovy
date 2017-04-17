@@ -47,7 +47,7 @@ class StorageConfig {
 
         with(new LocalContainerEntityManagerFactoryBean())
                 .lastOp { [ it.setDataSource(dataSource),
-                            it.packagesToScan = 'com.jani.webanalyzer.request',
+                            it.packagesToScan = 'com.jani.webanalyzer.model.request',
                             it.setJpaVendorAdapter(new HibernateJpaVendorAdapter()),
                             it.setJpaProperties(props.get())
         ]}

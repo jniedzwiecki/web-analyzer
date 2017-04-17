@@ -2,8 +2,8 @@ package com.jani.webanalyzer
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jani.webanalyzer.db.StorageService
-import com.jani.webanalyzer.request.AddPathsRequest
-import com.jani.webanalyzer.request.AddSinglePathRequest
+import com.jani.webanalyzer.model.request.AddPathsRequest
+import com.jani.webanalyzer.model.request.AddSinglePathRequest
 import groovy.transform.CompileStatic
 import org.apache.camel.Exchange
 import org.apache.camel.Processor

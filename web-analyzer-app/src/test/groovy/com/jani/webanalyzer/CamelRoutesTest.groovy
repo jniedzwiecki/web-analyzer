@@ -1,8 +1,8 @@
 package com.jani.webanalyzer
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.jani.webanalyzer.request.AddPathsRequest
-import com.jani.webanalyzer.request.AddSinglePathRequest
+import com.jani.webanalyzer.model.request.AddPathsRequest
+import com.jani.webanalyzer.model.request.AddSinglePathRequest
 import org.apache.camel.EndpointInject
 import org.apache.camel.Produce
 import org.apache.camel.ProducerTemplate

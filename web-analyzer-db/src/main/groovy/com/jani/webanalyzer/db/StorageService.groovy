@@ -1,6 +1,6 @@
 package com.jani.webanalyzer.db
 
-import com.jani.webanalyzer.request.AddSinglePathRequest
+import com.jani.webanalyzer.model.request.AddSinglePathRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 /**
