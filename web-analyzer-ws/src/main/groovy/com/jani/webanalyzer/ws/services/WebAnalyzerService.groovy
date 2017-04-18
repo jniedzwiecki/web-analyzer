@@ -20,6 +20,7 @@ import javax.jms.*
 import static com.jani.webanalyzer.model.request.AddPathsRequest.addPathsRequest
 import static com.jani.webanalyzer.model.request.GetPathRequest.getPathRequest
 import static com.jani.webanalyzer.utils.FluentBuilder.with
+import static com.jani.webanalyzer.ws.response.AddPathsResponse.addPathsResponse
 import static com.jani.webanalyzer.ws.response.GetPathResponse.getPathResponse
 import static javax.ws.rs.core.Response.Status.CREATED
 import static org.slf4j.LoggerFactory.getLogger
@@ -75,14 +76,14 @@ class WebAnalyzerService implements WebAnalyzer {
     WsAddPathsResponse add(WsAddPathsRequest addRequest) {
         with(addPathsRequest(addRequest.paths))
                 .op { this.addPathsProducer.send(messageOf(it)) }
-                .map { WsAddPathsResponse.addPathsResponse(CREATED, it.uuid) }
+                .map { addPathsResponse(CREATED, it.uuid) }
     }
 
     @Override
     @CompileStatic
     WsGetPathResponse getPath(UUID uuid) {
         def response = with(getPathRequest(uuid))
-                .op { this.addPathsProducer.send(messageOf(it)) }
+                .op { this.getPathProducer.send(messageOf(it)) }
                 .map { getPathResponseDispatcher.responseToRequest(it) }
         getPathResponse(response.originalRequestUUID, response.pathStatus, response.content)
     }

@@ -3,6 +3,7 @@ target
 .idea
 module_web-analyzer.xml
 web-analyzer.iml
+web-analyzer-ws/web-analyzer-ws.iml
 web-analyzer.xml
 web-analyzer.properties
 
