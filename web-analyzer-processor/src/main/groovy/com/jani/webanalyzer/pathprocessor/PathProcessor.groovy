@@ -1,54 +1,44 @@
 package com.jani.webanalyzer.pathprocessor
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.jani.webanalyzer.model.request.AddSinglePathRequest
-import org.apache.activemq.ActiveMQConnectionFactory
-import org.slf4j.Logger
+import com.jani.webanalyzer.utils.JmsAware
+import com.jani.webanalyzer.utils.ObjectMapperAware
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
 import org.springframework.stereotype.Service
 
+import javax.jms.Message
 import javax.jms.MessageConsumer
-import javax.jms.Queue
-import javax.jms.Session
+import javax.jms.MessageListener
 import javax.jms.TextMessage
-
-import static com.jani.webanalyzer.utils.FluentBuilder.with
-import static org.slf4j.LoggerFactory.getLogger
 
 /**
  * Created by jacekniedzwiecki on 24.03.2017.
  */
 @Service
 @PropertySource('classpath:web-analyzer-ws.properties')
-class PathProcessor {
+class PathProcessor implements JmsAware, ObjectMapperAware, MessageListener {
 
-    private static Logger logger = getLogger(PathProcessor.class)
-
-    Session session
     MessageConsumer consumer
-    Queue queue
-    ObjectMapper objectMapper = new ObjectMapper()
+    String activeBrokerUrl
 
     @Autowired
     PathProcessor(@Value('${activemq.broker.url}') String activeBrokerUrl,
                   @Value('${addSinglePath.request.endpoint}') String addSinglePathReqEndpoint) {
+        this.activeBrokerUrl = activeBrokerUrl
 
-        session = with(new ActiveMQConnectionFactory(activeBrokerUrl).createConnection())
-                .op { it.start() }
-                .op { it.setExceptionListener {
-                        exception -> logger.debug(exception.stackToString())
-                    }
-                }
-        .andGet { it.createSession(false, Session.AUTO_ACKNOWLEDGE) }
+        consumer = createMessageConsumer(addSinglePathReqEndpoint)
+        consumer.setMessageListener(this)
+    }
 
-        queue = session.createQueue(addSinglePathReqEndpoint)
+    @Override
+    String getActiveBrokerUrl() {
+        return activeBrokerUrl
+    }
 
-        consumer = session.createConsumer(queue)
-        consumer.setMessageListener {
-            def singlePathRequest = objectMapper.readValue((it as TextMessage).text, AddSinglePathRequest)
-            println(singlePathRequest.getOriginalUuid().toString())
-        }
+    @Override
+    void onMessage(Message message) {
+        def singlePathRequest = objectMapper.readValue((message as TextMessage).text, AddSinglePathRequest)
     }
 }

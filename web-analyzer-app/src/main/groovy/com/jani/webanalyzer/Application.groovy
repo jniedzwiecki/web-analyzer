@@ -1,8 +1,10 @@
 package com.jani.webanalyzer
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.jani.webanalyzer.db.StorageConfig
 import com.jani.webanalyzer.db.StorageService
 import com.jani.webanalyzer.pathprocessor.PathProcessor
+import com.jani.webanalyzer.utils.ObjectMapperAware
 import com.jani.webanalyzer.ws.configs.ServicesConfiguration
 import com.jani.webanalyzer.ws.exceptions.ToHttpErrorExceptionMapper
 import com.jani.webanalyzer.ws.services.WebAnalyzerService
@@ -24,14 +26,15 @@ class Application {
 
     static void main(String[] args) {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
-                ServicesConfiguration.class,
-                WebAnalyzerService.class,
-                ToHttpErrorExceptionMapper.class,
-                WebAnalyzerRoutesBuilder.class,
-                PathProcessor.class,
-                Application.class,
-                StorageConfig.class,
-                StorageService.class
+                ServicesConfiguration,
+                WebAnalyzerService,
+                ToHttpErrorExceptionMapper,
+                WebAnalyzerRoutesBuilder,
+                PathProcessor,
+                Application,
+                StorageConfig,
+                StorageService,
+                ObjectMapperAware
         )
         ctx.start()
     }
@@ -44,5 +47,10 @@ class Application {
     @Bean
     SpringCamelContext camelContext(ApplicationContext ctx) {
         with(new SpringCamelContext(ctx)).lastOp { it.setAutoStartup(true) }
+    }
+
+    @Bean
+    ObjectMapper objectMapper() {
+        new ObjectMapper()
     }
 }

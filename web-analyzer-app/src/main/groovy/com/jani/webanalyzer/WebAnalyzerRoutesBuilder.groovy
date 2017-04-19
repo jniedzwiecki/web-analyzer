@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.jani.webanalyzer.db.StorageService
 import com.jani.webanalyzer.model.request.AddPathsRequest
 import com.jani.webanalyzer.model.request.AddSinglePathRequest
-import groovy.transform.CompileStatic
-import org.apache.camel.Exchange
 import org.apache.camel.Processor
 import org.apache.camel.spring.SpringCamelContext
 import org.apache.camel.spring.SpringRouteBuilder
@@ -22,7 +20,6 @@ import static org.apache.activemq.camel.component.ActiveMQComponent.activeMQComp
  * Created by jacekniedzwiecki on 24.03.2017.
  */
 @Component
-@CompileStatic
 class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
 
     final static String ACTIVEMQ_PREFIX = "activemq:"
@@ -60,33 +57,27 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
     @Override
     void configure() throws Exception {
         from(addPathsReqEndpoint)
-            .process(singlePathExtractingProcessor)
-            .split(simple('${body}'))
-            .wireTap("direct:storeRequest")
-            .process(objectToJSonProcessor)
-            .to(addSinglePathEndpoint)
+                .process(singlePathExtractingProcessor)
+                .split(simple('${body}'))
+                .wireTap("direct:storeRequest")
+                .process(objectToJSonProcessor)
+                .to(addSinglePathEndpoint)
 
         from("direct:storeRequest")
                 .bean(storageService, 'storeRequest')
     }
 
-    static final Processor singlePathExtractingProcessor = new Processor() {
-        @Override
-        void process(Exchange ex) throws Exception {
-            List<AddSinglePathRequest> singlePathRequests =
-                    with(objectMapper.readValue(ex.getIn().getBody(String), AddPathsRequest)).map {
-                        AddPathsRequest req -> req.paths.stream()
-                                .map { String path -> new AddSinglePathRequest(req.uuid, path) }
-                                .collect(toList())
-                    }
-            ex.getOut().setBody(singlePathRequests)
-        }
+    static final Processor singlePathExtractingProcessor = { exchange ->
+        List<AddSinglePathRequest> singlePathRequests =
+                with(objectMapper.readValue(exchange.getIn().getBody(String), AddPathsRequest)).map {
+                    AddPathsRequest req -> req.paths.stream()
+                            .map { String path -> new AddSinglePathRequest(req.uuid, path) }
+                            .collect(toList())
+                }
+        exchange.getOut().setBody(singlePathRequests)
     }
 
-    static final Processor objectToJSonProcessor = new Processor() {
-        @Override
-        void process(Exchange exchange) throws Exception {
-            exchange.getOut().setBody(objectMapper.writeValueAsString(exchange.getIn().getBody()))
-        }
+    static final Processor objectToJSonProcessor = { exchange ->
+        exchange.getOut().setBody(objectMapper.writeValueAsString(exchange.getIn().getBody()))
     }
 }
