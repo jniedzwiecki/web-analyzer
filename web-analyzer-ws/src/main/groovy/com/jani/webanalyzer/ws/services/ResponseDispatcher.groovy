@@ -1,5 +1,6 @@
 package com.jani.webanalyzer.ws.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.jani.webanalyzer.model.reponse.BaseResponse
 import com.jani.webanalyzer.model.request.BaseRequest
 import com.jani.webanalyzer.utils.ObjectMapperAware
@@ -14,20 +15,24 @@ import java.util.concurrent.ConcurrentHashMap
  */
 class ResponseDispatcher<REQ extends BaseRequest, RES extends BaseResponse> implements MessageListener, ObjectMapperAware {
 
-    private Map<UUID, CompletableFuture<Message>> uuidToFutureMap = new ConcurrentHashMap<>()
+    private Map<String, CompletableFuture<Message>> uuidToFutureMap = new ConcurrentHashMap<>()
+
+    ResponseDispatcher(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper
+    }
 
     @Override
     void onMessage(Message message) {
-        RES response = objectMapper.readValue((message as TextMessage).text, RES)
+        BaseResponse response = objectMapper.readValue((message as TextMessage).text, BaseResponse)
         def future = uuidToFutureMap.remove(response.originalRequestUUID)
         future.complete(message)
     }
 
-    RES responseToRequest(REQ getPathRequest) {
+    RES responseForRequest(REQ request, Class<RES> resClass) {
         def future = new CompletableFuture<Message>()
-        uuidToFutureMap.put(getPathRequest.uuid, future)
+        uuidToFutureMap.put(request.uuid, future)
         future.thenApply {
-            objectMapper.readValue((it as TextMessage).text, RES)
+            objectMapper.readValue((it as TextMessage).text, resClass)
         } get()
     }
 }

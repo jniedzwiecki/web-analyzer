@@ -1,6 +1,7 @@
 package com.jani.webanalyzer.db
 
-import com.jani.webanalyzer.model.request.AddSinglePathRequest
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.jani.webanalyzer.model.request.BaseRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 /**
@@ -10,13 +11,15 @@ import org.springframework.stereotype.Service
 class StorageService {
 
     static RequestRepository requestRepository
+    static ObjectMapper objectMapper
 
     @Autowired
-    StorageService(RequestRepository requestRepository) {
+    StorageService(RequestRepository requestRepository, ObjectMapper objectMapper) {
         this.requestRepository = requestRepository
+        this.objectMapper = objectMapper
     }
 
-    static AddSinglePathRequest storeRequest(AddSinglePathRequest request) {
+    static void saveRequest(BaseRequest request) {
         requestRepository.save(request)
     }
 }

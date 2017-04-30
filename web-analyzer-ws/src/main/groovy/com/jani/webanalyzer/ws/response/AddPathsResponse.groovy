@@ -11,13 +11,13 @@ import javax.ws.rs.core.Response
 class AddPathsResponse extends BaseResponse {
 
     final Response.Status status
-    final UUID pathId
+    final String pathId
 
-    static AddPathsResponse addPathsResponse(Response.Status status, UUID pathId) {
+    static AddPathsResponse addPathsResponse(Response.Status status, String pathId) {
         return new AddPathsResponse(status, pathId)
     }
 
-    private AddPathsResponse(Response.Status status, UUID pathId) {
+    private AddPathsResponse(Response.Status status, String pathId) {
         this.status = status
         this.pathId = pathId
     }

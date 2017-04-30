@@ -1,10 +1,10 @@
 package com.jani.webanalyzer.ws.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.jani.webanalyzer.model.reponse.GetPathResponse
 import com.jani.webanalyzer.model.request.BaseRequest
 import com.jani.webanalyzer.model.request.GetPathRequest
 import com.jani.webanalyzer.utils.JmsAware
-import com.jani.webanalyzer.utils.ObjectMapperAware
 import com.jani.webanalyzer.ws.request.AddPathsRequest as WsAddPathsRequest
 import com.jani.webanalyzer.ws.response.AddPathsResponse as WsAddPathsResponse
 import com.jani.webanalyzer.ws.response.GetPathResponse as WsGetPathResponse
@@ -30,21 +30,25 @@ import static javax.ws.rs.core.Response.Status.CREATED
  */
 @Service
 @PropertySource('classpath:web-analyzer-ws.properties')
-class WebAnalyzerService implements WebAnalyzer, JmsAware, ObjectMapperAware {
+class WebAnalyzerService implements WebAnalyzer, JmsAware {
 
     private MessageProducer addPathsProducer
     private MessageProducer getPathProducer
     private MessageConsumer getPathConsumer
 
-    private ResponseDispatcher<GetPathRequest, GetPathResponse> getPathResponseDispatcher = new ResponseDispatcher<>()
+    private ObjectMapper objectMapper
+    private ResponseDispatcher<GetPathRequest, GetPathResponse> getPathResponseDispatcher
     private String activeBrokerUrl
 
     @Autowired
     WebAnalyzerService(@Value('${activemq.broker.url}') String activeBrokerUrl,
                        @Value('${addPaths.request.endpoint}') String addPathsReqEndpoint,
                        @Value('${getPath.request.endpoint}') String getPathReqEndpoint,
-                       @Value('${getPath.response.endpoint}') String getPathResEndpoint) {
+                       @Value('${getPath.response.endpoint}') String getPathResEndpoint,
+                       ObjectMapper objectMapper) {
         this.activeBrokerUrl = activeBrokerUrl
+        this.objectMapper = objectMapper
+        getPathResponseDispatcher = new ResponseDispatcher<>(objectMapper)
 
         addPathsProducer = createMessageProducer(addPathsReqEndpoint)
         addPathsProducer.setDeliveryMode(DeliveryMode.NON_PERSISTENT)
@@ -66,11 +70,15 @@ class WebAnalyzerService implements WebAnalyzer, JmsAware, ObjectMapperAware {
 
     @Override
     @CompileStatic
-    WsGetPathResponse getPath(UUID uuid) {
-        def response = with(getPathRequest(uuid))
-                .op { this.getPathProducer.send(messageOf(it)) }
-                .map { getPathResponseDispatcher.responseToRequest(it) }
-        getPathResponse(response.originalRequestUUID, response.pathStatus, response.content)
+    WsGetPathResponse getPath(String uuid) {
+        GetPathResponse response = with(getPathRequest(uuid))
+        .op {
+            this.getPathProducer.send(messageOf(it))
+        }
+        .map {
+            this.getPathResponseDispatcher.responseForRequest(it, GetPathResponse)
+        }
+        getPathResponse(response.originalRequestUUID, response.requestState, response.content)
     }
 
     private Message messageOf(BaseRequest request) {

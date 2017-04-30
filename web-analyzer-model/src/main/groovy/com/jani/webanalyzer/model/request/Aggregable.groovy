@@ -5,13 +5,13 @@ package com.jani.webanalyzer.model.request
  */
 trait Aggregable {
 
-    UUID originalUuid
+    Long originalId
 
-    def getOriginalUuid() {
-        originalUuid
+    def getOriginalId() {
+        originalId
     }
 
-    def setOriginalUuid(UUID originalUuid) {
-        this.originalUuid = originalUuid
+    def setOriginalId(Long originalId) {
+        this.originalId = originalId
     }
 }

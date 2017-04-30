@@ -1,5 +1,6 @@
 package com.jani.webanalyzer.model.reponse
 
+import com.jani.webanalyzer.utils.RequestState
 import groovy.transform.CompileStatic
 
 
@@ -10,6 +11,16 @@ import groovy.transform.CompileStatic
 class GetPathResponse extends BaseResponse {
 
     String path
-    PathStatus pathStatus
-    Optional<String> content
+    RequestState requestState
+    String content
+
+    static GetPathResponse getPathResponse(String originalRequestUUID, String path, RequestState requestState, Optional<String> content) {
+        new GetPathResponse().with {
+            it.originalRequestUUID = originalRequestUUID
+            it.path = path
+            it.requestState = requestState
+            it.content = content
+            it
+        }
+    }
 }

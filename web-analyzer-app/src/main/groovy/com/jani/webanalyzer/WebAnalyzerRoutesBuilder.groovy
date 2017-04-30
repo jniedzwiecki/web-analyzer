@@ -23,9 +23,14 @@ import static org.apache.activemq.camel.component.ActiveMQComponent.activeMQComp
 class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
 
     final static String ACTIVEMQ_PREFIX = "activemq:"
+    final static String STORE_REQUEST_ENDPOINT = "direct:storeRequest"
 
     String addPathsReqEndpoint
     String addSinglePathEndpoint
+    String getPathReqEndpoint
+    String getPathResEndpoint
+    String getPathReqProcessorEndpoint
+    String getPathResProcessorEndpoint
     SpringCamelContext camelContext
     static ObjectMapper objectMapper = new ObjectMapper()
     StorageService storageService
@@ -34,6 +39,10 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
     WebAnalyzerRoutesBuilder(@Value('${activemq.broker.url}') String activeBrokerUrl,
                              @Value('${addPaths.request.endpoint}') String addPathsReqEndpoint,
                              @Value('${addSinglePath.request.endpoint}') String addSinglePathEndpoint,
+                             @Value('${getPath.request.endpoint}') String getPathReqEndpoint,
+                             @Value('${getPath.response.endpoint}') String getPathResEndpoint,
+                             @Value('${getPath.request.processor.endpoint}') String getPathReqProcessorEndpoint,
+                             @Value('${getPath.response.processor.endpoint}') String getPathResProcessorEndpoint,
                              SpringCamelContext camelContext) {
         camelContext.addComponent("activemq", activeMQComponent(activeBrokerUrl))
         camelContext.tracing = true
@@ -42,6 +51,10 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
 
         this.addPathsReqEndpoint = ACTIVEMQ_PREFIX + addPathsReqEndpoint
         this.addSinglePathEndpoint = ACTIVEMQ_PREFIX + addSinglePathEndpoint
+        this.getPathReqEndpoint = ACTIVEMQ_PREFIX + getPathReqEndpoint
+        this.getPathResEndpoint = ACTIVEMQ_PREFIX + getPathResEndpoint
+        this.getPathReqProcessorEndpoint = ACTIVEMQ_PREFIX + getPathReqProcessorEndpoint
+        this.getPathResProcessorEndpoint = ACTIVEMQ_PREFIX + getPathResProcessorEndpoint
     }
 
     @PostConstruct
@@ -59,19 +72,24 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
         from(addPathsReqEndpoint)
                 .process(singlePathExtractingProcessor)
                 .split(simple('${body}'))
-                .wireTap("direct:storeRequest")
+                .wireTap(STORE_REQUEST_ENDPOINT)
                 .process(objectToJSonProcessor)
                 .to(addSinglePathEndpoint)
 
-        from("direct:storeRequest")
-                .bean(storageService, 'storeRequest')
+        from(STORE_REQUEST_ENDPOINT)
+                .bean(storageService, 'saveRequest')
+
+        from(getPathReqEndpoint)
+                .to(getPathReqProcessorEndpoint)
+        from(getPathResProcessorEndpoint)
+                .to(getPathResEndpoint)
     }
 
     static final Processor singlePathExtractingProcessor = { exchange ->
         List<AddSinglePathRequest> singlePathRequests =
                 with(objectMapper.readValue(exchange.getIn().getBody(String), AddPathsRequest)).map {
                     AddPathsRequest req -> req.paths.stream()
-                            .map { String path -> new AddSinglePathRequest(req.uuid, path) }
+                            .map { String path -> new AddSinglePathRequest(req.id, path) }
                             .collect(toList())
                 }
         exchange.getOut().setBody(singlePathRequests)

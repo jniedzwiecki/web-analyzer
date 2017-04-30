@@ -8,13 +8,15 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class GetPathRequest extends BaseRequest {
 
-    UUID pathUUID
+    String pathUuid
 
-    static GetPathRequest getPathRequest(UUID pathUUID) {
-        return new GetPathRequest(pathUUID)
+    static GetPathRequest getPathRequest(String pathId) {
+        return new GetPathRequest(pathId)
     }
 
-    GetPathRequest(UUID pathUUID) {
-        this.pathUUID = pathUUID
+    GetPathRequest() {}
+
+    GetPathRequest(String pathUuid) {
+        this.pathUuid = pathUuid
     }
 }

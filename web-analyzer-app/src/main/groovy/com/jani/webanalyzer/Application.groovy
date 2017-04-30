@@ -1,12 +1,14 @@
 package com.jani.webanalyzer
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.jani.webanalyzer.contentprocessor.ContentProcessor
 import com.jani.webanalyzer.db.StorageConfig
 import com.jani.webanalyzer.db.StorageService
 import com.jani.webanalyzer.pathprocessor.PathProcessor
 import com.jani.webanalyzer.utils.ObjectMapperAware
 import com.jani.webanalyzer.ws.configs.ServicesConfiguration
 import com.jani.webanalyzer.ws.exceptions.ToHttpErrorExceptionMapper
+import com.jani.webanalyzer.ws.services.ResponseDispatcher
 import com.jani.webanalyzer.ws.services.WebAnalyzerService
 import org.apache.camel.spring.SpringCamelContext
 import org.springframework.context.ApplicationContext
@@ -34,7 +36,9 @@ class Application {
                 Application,
                 StorageConfig,
                 StorageService,
-                ObjectMapperAware
+                ObjectMapperAware,
+                ContentProcessor,
+                ResponseDispatcher
         )
         ctx.start()
     }

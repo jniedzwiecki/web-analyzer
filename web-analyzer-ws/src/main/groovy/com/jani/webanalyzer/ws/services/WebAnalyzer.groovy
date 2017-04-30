@@ -23,6 +23,6 @@ interface WebAnalyzer {
     AddPathsResponse add(@Valid AddPathsRequest request)
 
     @GET
-    @Path("/path/{id}")
-    GetPathResponse getPath(@PathParam("id") UUID id)
+    @Path("/path/{uuid}")
+    GetPathResponse getPath(@PathParam("uuid") String uuid)
 }

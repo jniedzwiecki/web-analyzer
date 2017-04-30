@@ -2,9 +2,10 @@ package com.jani.webanalyzer.model.request
 
 import groovy.transform.CompileStatic
 
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.validation.constraints.NotNull
-import javax.persistence.Entity
 /**
  * Created by jacekniedzwiecki on 17.03.2017.
  */
@@ -13,6 +14,9 @@ import javax.persistence.Entity
 abstract class BaseRequest {
 
     @Id
+    @GeneratedValue
+    long id
+
     @NotNull
-    UUID uuid = UUID.randomUUID()
+    String uuid = UUID.randomUUID().toString()
 }
