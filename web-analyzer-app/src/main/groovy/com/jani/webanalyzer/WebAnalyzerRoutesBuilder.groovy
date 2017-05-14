@@ -91,7 +91,7 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
         from(addSinglePathResEndpoint)
                 .aggregate(groovy('new groovy.json.JsonSlurper().parseText(request.body).originalUuid'),
                     addSinglePathAggregationStrategy)
-                .completionSize(3)
+                .completionSize(groovy('new groovy.json.JsonSlurper().parseText(request.body).originalSize'))
                 .process(addSinglePathsToAddPathsProcessor)
                 .to(addPathsResEndpoint)
 
@@ -108,7 +108,7 @@ class WebAnalyzerRoutesBuilder extends SpringRouteBuilder {
         List<AddSinglePathRequest> singlePathRequests =
                 with(objectMapper.readValue(exchange.getIn().getBody(String), AddPathsRequest)).map {
                     AddPathsRequest req -> req.paths.stream()
-                            .map { String path -> new AddSinglePathRequest(req.uuid, path) }
+                            .map { String path -> new AddSinglePathRequest(req.uuid, req.paths.size(), path) }
                             .collect(toList())
                 }
         exchange.getOut().setBody(singlePathRequests)

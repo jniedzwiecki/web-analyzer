@@ -7,10 +7,11 @@ class AddSinglePathResponse extends BaseResponse {
 
     String path
 
-    static AddSinglePathResponse addSinglePathResponse(String path, String originalUUID) {
+    static AddSinglePathResponse addSinglePathResponse(String path, String originalUUID, int originalSize) {
         new AddSinglePathResponse().with {
             it.path = path
-            it.setOriginalUuid(originalUUID)
+            it.originalUuid = originalUUID
+            it.originalSize = originalSize
             it
         }
     }

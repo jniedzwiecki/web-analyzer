@@ -44,7 +44,8 @@ class PathProcessor implements JmsAware, ObjectMapperAware, MessageListener {
     void onMessage(Message message) {
         def addSinglePathRequest = objectMapper.readValue((message as TextMessage).text, AddSinglePathRequest)
 
-        def addSinglePathResponse = objectMapper.writeValueAsString(addSinglePathResponse(addSinglePathRequest.path, addSinglePathRequest.originalUuid.toString()))
+        def addSinglePathResponse = objectMapper.writeValueAsString(addSinglePathResponse(addSinglePathRequest.path,
+                addSinglePathRequest.originalUuid.toString(), addSinglePathRequest.originalSize))
         messageProducer.send(createTextMessage(addSinglePathResponse))
     }
 }
