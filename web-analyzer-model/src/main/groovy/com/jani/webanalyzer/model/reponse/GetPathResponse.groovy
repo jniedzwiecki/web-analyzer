@@ -14,9 +14,9 @@ class GetPathResponse extends BaseResponse {
     RequestState requestState
     String content
 
-    static GetPathResponse getPathResponse(String originalRequestUUID, String path, RequestState requestState, Optional<String> content) {
+    static GetPathResponse getPathResponse(String originalUUID, String path, RequestState requestState, Optional<String> content) {
         new GetPathResponse().with {
-            it.originalRequestUUID = originalRequestUUID
+            it.setOriginalUuid(originalUUID)
             it.path = path
             it.requestState = requestState
             it.content = content

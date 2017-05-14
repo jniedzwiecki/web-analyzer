@@ -24,7 +24,7 @@ class ResponseDispatcher<REQ extends BaseRequest, RES extends BaseResponse> impl
     @Override
     void onMessage(Message message) {
         BaseResponse response = objectMapper.readValue((message as TextMessage).text, BaseResponse)
-        def future = uuidToFutureMap.remove(response.originalRequestUUID)
+        def future = uuidToFutureMap.remove(response.originalUuid.toString())
         future.complete(message)
     }
 

@@ -1,6 +1,7 @@
 package com.jani.webanalyzer.model.reponse
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.jani.webanalyzer.model.request.Aggregable
 import groovy.transform.CompileStatic
 
 import javax.validation.constraints.NotNull
@@ -9,12 +10,8 @@ import javax.validation.constraints.NotNull
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @CompileStatic
-class BaseResponse {
+class BaseResponse implements Aggregable {
 
     @NotNull
     String uuid = UUID.randomUUID()
-
-    @NotNull
-    String originalRequestUUID
-
 }

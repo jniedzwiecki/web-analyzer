@@ -15,8 +15,8 @@ class AddSinglePathRequest extends BaseRequest implements Aggregable, StatefulRe
 
     AddSinglePathRequest() {}
 
-    AddSinglePathRequest(Long originalId, String path) {
-        setOriginalId(originalId)
+    AddSinglePathRequest(String originalUuid, String path) {
+        setOriginalUuid(originalUuid)
         this.path = path
     }
 }

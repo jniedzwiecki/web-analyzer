@@ -1,5 +1,7 @@
 package com.jani.webanalyzer.ws.response
 
+import com.jani.webanalyzer.model.reponse.AddSinglePathResponse
+import com.jani.webanalyzer.model.request.Aggregable
 import groovy.transform.CompileStatic
 
 import javax.ws.rs.core.Response
@@ -8,25 +10,26 @@ import javax.ws.rs.core.Response
  * Created by jacekniedzwiecki on 08.03.2017.
  */
 @CompileStatic
-class AddPathsResponse extends BaseResponse {
+class AddPathsResponse extends BaseResponse implements Aggregable {
 
     final Response.Status status
-    final String pathId
+    final List<AddSinglePathResponse> addSinglePathResponses
 
-    static AddPathsResponse addPathsResponse(Response.Status status, String pathId) {
-        return new AddPathsResponse(status, pathId)
+    static AddPathsResponse addPathsResponse(Response.Status status, String originalUUID, List<AddSinglePathResponse> addSinglePathResponses) {
+        return new AddPathsResponse(status, originalUUID, addSinglePathResponses)
     }
 
-    private AddPathsResponse(Response.Status status, String pathId) {
+    private AddPathsResponse(Response.Status status, String originalUUID, List<AddSinglePathResponse> addSinglePathResponses) {
         this.status = status
-        this.pathId = pathId
+        this.setOriginalUuid(originalUUID)
+        this.addSinglePathResponses = addSinglePathResponses
     }
 
     @Override
     String toString() {
         return "{ \"type\" : \"AddResponse\"," +
                 " \"status\" : \"" + status.toString() + "\", " +
-                " \"pathId\" : \"" + pathId + "\"" +
+                " \"originalUUID\" : \"" + getOriginalUuid() + "\"" +
                 "}"
     }
 }
